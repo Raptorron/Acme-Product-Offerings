@@ -22,7 +22,9 @@
   <script>
     // global variables
     let id = ''; // id of product - how will our app change this?
-    let data = []; // list of products - where will this data come from?
+    let productData = []; // list of products - where will this data come from?
+    let offeringData = [];
+    let companyData = [];
     const product = 'https://acme-users-api-rev.herokuapp.com/api/products';
     const companies = 'https://acme-users-api-rev.herokuapp.com/api/companies';
     const offerings = 'https://acme-users-api-rev.herokuapp.com/api/offerings';
@@ -30,8 +32,15 @@
       const responses = await Promise.all([fetch(product), fetch(companies), fetch(offerings)]);
       const [productList, companyList, offeringList] = await Promise.all(responses.map(response => response.json()));
       productList.forEach(product => {
-        data.push(product);
+        productData.push(product);
       })
+      companyList.forEach(company => {
+        companyData.push(company);
+      })
+      offeringList.forEach(offering => {
+        offeringData.push(offering);
+      });
+
       render();
     }
     dataSteal();
@@ -39,7 +48,7 @@
     const displayList = document.querySelector('#products');
 
     const render = () => {
-      const html = data.map(datum =>
+      const html = productData.map(datum =>
         `<div class='product-card'>
           <div>${datum.name}</div>
           <div>${datum.description}</div>
@@ -48,9 +57,11 @@
       displayList.innerHTML = html;
     }
 
-    console.log(data)
+    console.log(productData);
+    console.log(offeringData);
+    console.log(companyData);
     render();
-    
+
     // define event listeners (i.e. 'hashchange')
 
     // other functions?
